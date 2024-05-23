@@ -15,6 +15,21 @@ public abstract class PagamentoMapper {
                 .numero(pagamento.getNumero())
                 .status(pagamento.getStatus())
                 .expiracao(pagamento.getExpiracao())
+                .pedidoId(pagamento.getPedidoId())
+                .build();
+    }
+
+    public static Pagamento paraDomain(PagamentoDto dto) {
+        return Pagamento.builder()
+                .id(dto.id())
+                .nome(dto.nome())
+                .formaDePagamentoId(dto.formaDePagamentoId())
+                .valor(dto.valor())
+                .codigo(dto.codigo())
+                .numero(dto.numero())
+                .status(dto.status())
+                .expiracao(dto.expiracao())
+                .pedidoId(dto.pedidoId())
                 .build();
     }
 }
