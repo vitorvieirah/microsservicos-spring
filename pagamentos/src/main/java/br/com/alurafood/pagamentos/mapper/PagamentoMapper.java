@@ -17,7 +17,7 @@ public abstract class PagamentoMapper {
                 .expiracao(pagamento.getExpiracao())
                 .pedidoId(pagamento.getPedidoId())
                 .build();
-    }
+}
 
     public static Pagamento paraDomain(PagamentoDto dto) {
         return Pagamento.builder()
