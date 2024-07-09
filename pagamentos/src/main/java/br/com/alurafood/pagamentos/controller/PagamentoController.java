@@ -2,23 +2,24 @@ package br.com.alurafood.pagamentos.controller;
 
 import br.com.alurafood.pagamentos.dtos.PagamentoDto;
 import br.com.alurafood.pagamentos.service.PagamentoService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 
 @RestController
 @RequestMapping("/pagamentos")
-@AllArgsConstructor
 public class PagamentoController {
+
+    public PagamentoController(PagamentoService service) {
+        this.service = service;
+    }
 
     private PagamentoService service;
 
@@ -45,6 +46,11 @@ public class PagamentoController {
     public ResponseEntity<PagamentoDto> atualizar(@PathVariable @NotNull Long id, @RequestBody @Valid PagamentoDto dto) {
         PagamentoDto atualizado = service.atualizarPagamento(id, dto);
         return ResponseEntity.ok(atualizado);
+    }
+
+    @PatchMapping("/{id}/confirmar")
+    public void confirmarPagamento(@PathVariable @NotNull Long id){
+        service.confirmarPagamento(id);
     }
 
     @DeleteMapping("/{id}")

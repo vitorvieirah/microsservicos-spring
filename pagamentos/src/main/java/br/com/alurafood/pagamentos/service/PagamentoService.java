@@ -1,21 +1,28 @@
 package br.com.alurafood.pagamentos.service;
 
 import br.com.alurafood.pagamentos.dtos.PagamentoDto;
+import br.com.alurafood.pagamentos.http.PedidoClient;
 import br.com.alurafood.pagamentos.mapper.PagamentoMapper;
 import br.com.alurafood.pagamentos.model.Pagamento;
 import br.com.alurafood.pagamentos.model.Status;
 import br.com.alurafood.pagamentos.repository.PagamentoRepository;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
+
 @Service
-@AllArgsConstructor
 public class PagamentoService {
 
+    public PagamentoService(PagamentoRepository repository) {
+        this.repository = repository;
+    }
+
     private PagamentoRepository repository;
+
+    private PedidoClient pedido;
 
     public Page<PagamentoDto> obterTodos(Pageable paginacao) {
         return repository
@@ -43,6 +50,18 @@ public class PagamentoService {
         pagamento.setId(id);
         pagamento = repository.save(pagamento);
         return PagamentoMapper.paraDto(pagamento);
+    }
+
+    public void confirmarPagamento(Long id){
+        Optional<Pagamento> pagamento = repository.findById(id);
+
+        if (!pagamento.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+
+        pagamento.get().setStatus(Status.CONFIRMADO);
+        repository.save(pagamento.get());
+        pedido.atualizaPagamento(pagamento.get().getPedidoId());
     }
 
     public void excluirPagamento(Long id) {

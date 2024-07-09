@@ -5,31 +5,13 @@ import br.com.alurafood.pagamentos.model.Pagamento;
 
 public abstract class PagamentoMapper {
 
+
     public static PagamentoDto paraDto(Pagamento pagamento){
-        return PagamentoDto.builder()
-                .id(pagamento.getId())
-                .nome(pagamento.getNome())
-                .formaDePagamentoId(pagamento.getFormaDePagamentoId())
-                .valor(pagamento.getValor())
-                .codigo(pagamento.getCodigo())
-                .numero(pagamento.getNumero())
-                .status(pagamento.getStatus())
-                .expiracao(pagamento.getExpiracao())
-                .pedidoId(pagamento.getPedidoId())
-                .build();
-}
+        return new PagamentoDto(pagamento.getId(), pagamento.getValor(), pagamento.getNome(), pagamento.getNumero(),
+                pagamento.getExpiracao(), pagamento.getCodigo(), pagamento.getStatus(), pagamento.getFormaDePagamentoId(), pagamento.getPedidoId());
+    }
 
     public static Pagamento paraDomain(PagamentoDto dto) {
-        return Pagamento.builder()
-                .id(dto.id())
-                .nome(dto.nome())
-                .formaDePagamentoId(dto.formaDePagamentoId())
-                .valor(dto.valor())
-                .codigo(dto.codigo())
-                .numero(dto.numero())
-                .status(dto.status())
-                .expiracao(dto.expiracao())
-                .pedidoId(dto.pedidoId())
-                .build();
+        return new Pagamento(dto.id(), dto.valor(), dto.nome(), dto.numero(), dto.expiracao(), dto.codigo(), dto.status(), dto.pedidoId(), dto.formaDePagamentoId());
     }
 }
