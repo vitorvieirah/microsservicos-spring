@@ -67,4 +67,15 @@ public class PagamentoService {
     public void excluirPagamento(Long id) {
         repository.deleteById(id);
     }
+
+    public void alterarStatus(Long id) {
+        Optional<Pagamento> pagamento = repository.findById(id);
+
+        if (!pagamento.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+
+        pagamento.get().setStatus(Status.CONFIRMADO_SEM_INTEGRACAO);
+        repository.save(pagamento.get());
+    }
 }
