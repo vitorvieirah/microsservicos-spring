@@ -10,6 +10,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StatusDto {
+public class
+
+
+
+
+StatusDto {
     private Status status;
 }
