@@ -1,4 +1,3 @@
-FROM mysql:8.0
 FROM openjdk:17-jre-slim
 WORKDIR /app
 COPY pom.xml .
