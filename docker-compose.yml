@@ -1,0 +1,51 @@
+version: "3.9"
+services:
+  pagamentos: 
+    image: vitorhugo/app-pagamentos:1.2
+    container_name: pagamentosC
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://meu-mysql:3306/alurafood-pagamento?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://ms-server:8081/eureka
+      SERVER_PORT: 8080
+    networks:
+      - compose-bridge
+    ports:
+      - 8080:8080
+
+  gateway:
+    image: vitorhugo/app-gateway:1.0
+    container_name: gatewayC
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://ms-server:8081/eureka
+    networks:
+      - compose-bridge
+    ports:
+      - 8082:8082
+
+  pedidos:
+    image: vitorhugo/app-pedidos:1.0
+    container_name: pedidosC
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://meu-mysql:3306/alurafood-pedidos?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://ms-server:8081/eureka
+    networks:
+      - compose-bridge
+    ports:
+      - 0:0
+
+
+  server:
+    image: vitorhugo/app-server:1.0
+    container_name: ms-server
+    networks:
+      - compose-bridge
+    ports:
+      - 8081:8081
+
+networks:
+  compose-bridge:
+    driver: bridge
